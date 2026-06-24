@@ -19,7 +19,7 @@ graph TB
 
     User(["Ứng dụng Người dùng / WebUI"]):::userApp --> |REST API / SDK| API["API Server"]:::module
 
-    subgraph Core[Core Framework]
+    subgraph Core["Core Framework"]
         direction TB
         Ingest["Luồng Xử lý Tài liệu"]:::module
         Query["Luồng Truy vấn & Tìm kiếm"]:::module
@@ -34,7 +34,7 @@ graph TB
     
     API --> Core
 
-    subgraph StorageLayer[Lưu trữ Cục bộ (Local Storage)]
+    subgraph StorageLayer["Lưu trữ Cục bộ (Local Storage)"]
         direction LR
         KV[("KV Storage")]:::storage
         Vector[("Vector Storage")]:::storage
@@ -42,7 +42,7 @@ graph TB
         Doc[("Trạng thái Tài liệu")]:::storage
     end
 
-    subgraph Models[Mô hình Cục bộ (Local Models)]
+    subgraph Models["Mô hình Cục bộ (Local Models)"]
         direction LR
         LLM["Large Language Models"]:::external
         EmbedMod["Embedding Models"]:::external
