@@ -12,41 +12,36 @@ Kiến trúc hệ thống được thiết kế tối ưu, có khả năng mở 
 
 ```mermaid
 graph TB
-    classDef userApp fill:#f9f9f9,stroke:#333,stroke-width:2px;
-    classDef module fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
-    classDef storage fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
-    classDef external fill:#f1f8e9,stroke:#689f38,stroke-width:2px;
-
-    User(["Ứng dụng Người dùng / WebUI"]):::userApp --> |REST API / SDK| API["API Server"]:::module
+    User(["User App / WebUI"]) --> |REST API / SDK| API["API Server"]
 
     subgraph Core["Core Framework"]
         direction TB
-        Ingest["Luồng Xử lý Tài liệu"]:::module
-        Query["Luồng Truy vấn & Tìm kiếm"]:::module
+        Ingest["Document Ingestion"]
+        Query["Query & Retrieval"]
 
-        Ingest --> Parse["Phân tích & Cắt Text (Chunking)"]:::module
-        Parse --> Extract["Trích xuất Thực thể & Mối quan hệ"]:::module
-        Extract --> Embed["Tạo Vector Embedding"]:::module
+        Ingest --> Parse["Parsing & Chunking"]
+        Parse --> Extract["Entity & Relation Extraction"]
+        Extract --> Embed["Vector Embedding"]
 
-        Query --> Retrieve["Truy xuất Hai lớp (Dual-Level)"]:::module
-        Retrieve --> Gen["Tạo câu trả lời (LLM Generation)"]:::module
+        Query --> Retrieve["Dual-Level Retrieval"]
+        Retrieve --> Gen["LLM Generation"]
     end
     
     API --> Core
 
-    subgraph StorageLayer["Lưu trữ Cục bộ (Local Storage)"]
+    subgraph StorageLayer["Local Storage Backends"]
         direction LR
-        KV[("KV Storage")]:::storage
-        Vector[("Vector Storage")]:::storage
-        Graph[("Graph Storage")]:::storage
-        Doc[("Trạng thái Tài liệu")]:::storage
+        KV[("KV Storage")]
+        Vector[("Vector Storage")]
+        Graph[("Graph Storage")]
+        Doc[("Doc Status")]
     end
 
-    subgraph Models["Mô hình Cục bộ (Local Models)"]
+    subgraph Models["Local Models"]
         direction LR
-        LLM["Large Language Models"]:::external
-        EmbedMod["Embedding Models"]:::external
-        VLM["Vision Language Models"]:::external
+        LLM["Large Language Models"]
+        EmbedMod["Embedding Models"]
+        VLM["Vision Language Models"]
     end
 
     Extract --> Models
